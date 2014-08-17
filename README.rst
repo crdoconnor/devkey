@@ -4,7 +4,7 @@ DevKey
 Step 1 - Put this file into the root of your project and call it dev.py::
     
     
-    Yourproject development environment commands.
+    """Yourproject development environment commands."""
     from os import system as s, chdir as cd
     from sh import hg
     import os
@@ -33,12 +33,12 @@ Step 1 - Put this file into the root of your project and call it dev.py::
         """strip the trailing whitespace from all files in repo."""
         cd(DEVDIR)
         repofiles = hg("locate", "*.py").split('\n')
-    repofiles.remove('')
-    for filename in repofiles:
-        with open(filename, 'r') as fh:
-            new = [line.rstrip() for line in fh]
-        with open(filename, 'w') as fh:
-            [fh.write('%s\n' % line) for line in new]
+        repofiles.remove('')
+        for filename in repofiles:
+            with open(filename, 'r') as fh:
+                new = [line.rstrip() for line in fh]
+            with open(filename, 'w') as fh:
+                [fh.write('%s\n' % line) for line in new]
 
 Step 2: Run: sudo pip install devkey sh
 
