@@ -1,4 +1,5 @@
 setup.cfg
+.pypirc
 *.pyc
 build/
 devkey.egg-info/
