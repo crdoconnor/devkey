@@ -9,16 +9,17 @@ class CommandModule(object):
 
         self.commands = {}
         for method_name, actual_method in inspect.getmembers(self.dev_module, inspect.isfunction):
-            self.commands[method_name] = {
-                'help': actual_method.__doc__,
-                'onelinehelp': actual_method.__doc__.split('\n')[0],
-                'function': actual_method,
-                'linenumber': inspect.findsource(actual_method)[1],
-                'args': inspect.getargspec(actual_method).args,
-                'varargs': inspect.getargspec(actual_method).varargs,
-                'keywords': inspect.getargspec(actual_method).keywords,
-                'defaults': inspect.getargspec(actual_method).defaults,
-            }
+            if not method_name.startswith("_"):
+                self.commands[method_name] = {
+                    'help': actual_method.__doc__,
+                    'onelinehelp': actual_method.__doc__.split('\n')[0],
+                    'function': actual_method,
+                    'linenumber': inspect.findsource(actual_method)[1],
+                    'args': inspect.getargspec(actual_method).args,
+                    'varargs': inspect.getargspec(actual_method).varargs,
+                    'keywords': inspect.getargspec(actual_method).keywords,
+                    'defaults': inspect.getargspec(actual_method).defaults,
+                }
 
     def command_list(self):
         return self.commands.keys() 
@@ -48,7 +49,7 @@ class CommandModule(object):
             print
             print self.commands[command]['help']
         else:
-            print "Command '%s' not found in dev.py."
+            print "Command '%s' not found in %s" % (command, self.devpy_filename)
 
     def print_help(self):
         print "Usage: d command [args]"
@@ -70,4 +71,4 @@ class CommandModule(object):
             getattr(self.dev_module, command).func_globals['CWD'] = os.getcwd()
             getattr(self.dev_module, command)(*dev_command_args)
         else:
-            print "Command '%s' not found in dev.py." % command
+            print "Command '%s' not found in %s" % (command, self.devpy_filename)
