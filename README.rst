@@ -1,7 +1,7 @@
 DevKey
 ======
 
-Step 1 - Put this file into the root of your project and call it dev.py::
+Step 1 - Put a file like this into the root of your project folder with your most commonly used day to day commands. Call it dev.py::
     
     
     """Yourproject development environment commands."""
@@ -40,7 +40,7 @@ Step 1 - Put this file into the root of your project and call it dev.py::
             with open(filename, 'w') as fh:
                 [fh.write('%s\n' % line) for line in new]
 
-Step 2: Run: sudo pip install devkey sh
+Step 2: Run: "sudo pip install devkey sh"
 
 Step 3: Run: "sudo activate-global-python-argcomplete" (optional; this will give you autocomplete)
 
@@ -59,13 +59,15 @@ Step 3: Run the 'd' command in any folder in your project::
     
     Run 'd help [command]' to get help on a particular command.
 
-Step 4: Add more commands!
+Step 4: Add more commands.
 
 
 Features
 ========
 
-* Autocomplete
-* Intelligently handles arguments
+* Autodocuments itself using your docstrings.
+* Use variables DEVDIR or CWD in any command to refer to dev.py's directory or the current working directory.
+* Passes any arguments on to the method via the command line.
+* Autocomplete works out of the box.
 
 For more documentation, see https://devkey.readthedocs.org/
