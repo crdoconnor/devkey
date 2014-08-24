@@ -10,9 +10,10 @@ class CommandModule(object):
         self.commands = {}
         for method_name, actual_method in inspect.getmembers(self.dev_module, inspect.isfunction):
             if not method_name.startswith("_"):
+                docstring = "" if actual_method.__doc__ is None else actual_method.__doc__
                 self.commands[method_name] = {
-                    'help': actual_method.__doc__,
-                    'onelinehelp': actual_method.__doc__.split('\n')[0],
+                    'help': docstring.__doc__,
+                    'onelinehelp': docstring.split('\n')[0],
                     'function': actual_method,
                     'linenumber': inspect.findsource(actual_method)[1],
                     'args': inspect.getargspec(actual_method).args,
