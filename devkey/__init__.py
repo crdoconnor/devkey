@@ -4,7 +4,7 @@
 import interpreter, sys
 
 # The version as used in the setup.py and the docs conf.py
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 if __name__ == '__main__':
     exit = interpreter.interpreter()
