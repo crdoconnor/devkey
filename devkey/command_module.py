@@ -60,7 +60,7 @@ class CommandModule(object):
         length_of_longest_command = self.length_of_longest_command()
 
         for name, command in self.sorted_commands():
-            if command['help']:
+            if command['helptext']:
                 print "  %s - %s" % (name.rjust(length_of_longest_command), command['onelinehelp'])
 
         print
