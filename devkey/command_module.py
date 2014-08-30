@@ -12,7 +12,7 @@ class CommandModule(object):
             if not method_name.startswith("_"):
                 docstring = "" if actual_method.__doc__ is None else actual_method.__doc__
                 self.commands[method_name] = {
-                    'help': docstring.__doc__,
+                    'helptext': docstring,
                     'onelinehelp': docstring.split('\n')[0],
                     'function': actual_method,
                     'linenumber': inspect.findsource(actual_method)[1],
@@ -34,7 +34,7 @@ class CommandModule(object):
                 if existing_commands[0] in ["help", "--help", "-h"]:
                     return (v for v in self.command_list() + ['help'] if v.startswith(prefix)) 
                 else:
-                    warn(self.commands[existing_commands[0]]['help'])
+                    warn(self.commands[existing_commands[0]]['helptext'])
         except Exception, e:
             warn(str(e))
 
@@ -48,9 +48,9 @@ class CommandModule(object):
         if command in self.command_list():
             print "Usage: d %s [args]" % command
             print
-            print self.commands[command]['help']
+            print self.commands[command]['helptext']
         else:
-            print "Command '%s' not found in %s" % (command, self.devpy_filename)
+            print "Command '%s' not found in %s. Type 'd help' to see a full list of commands." % (command, self.devpy_filename)
 
     def print_help(self):
         print "Usage: d command [args]"

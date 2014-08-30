@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
 import os, sys, command_module
 import argcomplete, argparse
 
@@ -32,7 +35,7 @@ def interpreter():
         parsed_args = parser.parse_args()
         commands = parsed_args.commands
 
-        if len(commands) == 0:
+        if len(commands) == 0 or len(commands) == 1 and commands[0] in ['-h', '--help', 'help']:
             cm.print_help()
         elif len(commands) == 2 and commands[0] in ['-h', '--help', 'help']:
             cm.help_command(commands[1])
