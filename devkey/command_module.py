@@ -22,8 +22,27 @@ class CommandModule(object):
                     'defaults': inspect.getargspec(actual_method).defaults,
                 }
 
+    def correct_args(self, command, number):
+        if self.commands[command]['varargs'] is not None:
+            return True
+        elif len(self.commands[command]['args']) == number:
+            return True
+        else:
+            return False
+
+    def arg_help(self, command):
+        if self.commands[command]['varargs'] is not None:
+            vararg_name = self.commands[command]['varargs']
+            if vararg_name[-1] == "s":
+                vararg_name = vararg_name[:-1]
+            return "[%s1] [%s2] [%s3] ..." % (vararg_name, vararg_name, vararg_name)
+        elif len(self.commands[command]['args']) > 0:
+            return ' '.join([arg for arg in self.commands[command]['args']])
+        else:
+            return ""
+
     def command_list(self):
-        return self.commands.keys() 
+        return self.commands.keys()
 
     def command_completer(self, prefix, parsed_args, **kwargs):
         try:
@@ -46,7 +65,7 @@ class CommandModule(object):
     
     def help_command(self, command):
         if command in self.command_list():
-            print "Usage: d %s [args]" % command
+            print "Usage: d %s %s" % (command, self.arg_help(command))
             print
             print self.commands[command]['helptext']
         else:
@@ -68,8 +87,12 @@ class CommandModule(object):
 
     def run_command(self, command, dev_command_args):
         if command in self.command_list():
-            getattr(self.dev_module, command).func_globals['DEVDIR'] = os.path.abspath(os.path.dirname(self.devpy_filename))
-            getattr(self.dev_module, command).func_globals['CWD'] = os.getcwd()
-            getattr(self.dev_module, command)(*dev_command_args)
+            if self.correct_args(command, len(dev_command_args)):
+                getattr(self.dev_module, command).func_globals['DEVDIR'] = os.path.abspath(os.path.dirname(self.devpy_filename))
+                getattr(self.dev_module, command).func_globals['CWD'] = os.getcwd()
+                getattr(self.dev_module, command)(*dev_command_args)
+            else:
+                print "Incorrect number of arguments for command '%s'.\n" % command
+                self.help_command(command)
         else:
             print "Command '%s' not found in %s" % (command, self.devpy_filename)

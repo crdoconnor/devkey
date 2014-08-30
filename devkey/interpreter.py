@@ -37,7 +37,7 @@ def interpreter():
 
         if len(commands) == 0 or len(commands) == 1 and commands[0] in ['-h', '--help', 'help']:
             cm.print_help()
-        elif len(commands) == 2 and commands[0] in ['-h', '--help', 'help']:
+        elif len(commands) > 1 and commands[0] in ['-h', '--help', 'help']:
             cm.help_command(commands[1])
         else:
             cm.run_command(commands[0], commands[1:])
