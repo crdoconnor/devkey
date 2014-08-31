@@ -25,7 +25,7 @@ def interpreter():
     if not devpy_filename:
         print "dev.py not found in the following directories:\n"
         print '\n'.join(directories_checked)
-        print "\nSee http://github.io/crdoconnor/devkey"
+        print "\nSee http://devkey.readthedocs.org/en/latest/quickstart.html"
         return 1
     else:
         cm = command_module.CommandModule(devpy_filename)
