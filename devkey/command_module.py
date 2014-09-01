@@ -45,13 +45,12 @@ class CommandModule(object):
         return self.commands.keys()
 
     def command_completer(self, prefix, parsed_args, **kwargs):
-        try:
-            existing_commands = parsed_args.commands
-            if len(existing_commands) == 0:
-                return (v for v in self.command_list() + ['help'] if v.startswith(prefix)) 
-            else:
-                if existing_commands[0] in ["help", "--help", "-h"]:
-                    return (v for v in self.command_list() + ['help'] if v.startswith(prefix))
+        existing_commands = parsed_args.commands
+        if len(existing_commands) == 0:
+            return (v for v in self.command_list() + ['help'] if v.startswith(prefix)) 
+        else:
+            if existing_commands[0] in ["help", "--help", "-h"]:
+                return (v for v in self.command_list() + ['help'] if v.startswith(prefix))
 
     def sorted_commands(self):
         return sorted(self.commands.items(), key=lambda command: command[1]['linenumber'])
