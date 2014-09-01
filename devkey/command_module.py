@@ -51,11 +51,7 @@ class CommandModule(object):
                 return (v for v in self.command_list() + ['help'] if v.startswith(prefix)) 
             else:
                 if existing_commands[0] in ["help", "--help", "-h"]:
-                    return (v for v in self.command_list() + ['help'] if v.startswith(prefix)) 
-                else:
-                    warn(self.commands[existing_commands[0]]['helptext'])
-        except Exception, e:
-            warn(str(e))
+                    return (v for v in self.command_list() + ['help'] if v.startswith(prefix))
 
     def sorted_commands(self):
         return sorted(self.commands.items(), key=lambda command: command[1]['linenumber'])
