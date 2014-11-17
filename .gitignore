@@ -2,5 +2,5 @@ setup.cfg
 .pypirc
 *.pyc
 build/
-devkey.egg-info/
+keycom.egg-info/
 dist/
