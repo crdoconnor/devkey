@@ -1,5 +1,4 @@
 import os, imp, inspect
-from argcomplete.completers import FilesCompleter
 from argcomplete import warn
 
 class CommandModule(object):
