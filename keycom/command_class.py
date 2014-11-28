@@ -1,4 +1,4 @@
-import os, inspect
+import os, inspect, sys
 
 class CommandClass(object):
     def __init__(self, keycom_class):
@@ -9,24 +9,40 @@ class CommandClass(object):
         for method_name, actual_method in inspect.getmembers(self.keycom_class, inspect.ismethod):
             if not method_name.startswith("_"):
                 docstring = "" if actual_method.__doc__ is None else actual_method.__doc__
+                argspec = inspect.getargspec(actual_method)
+                args = argspec.args
+                varargs = argspec.varargs
+                keyargs = argspec.keywords
+
+                if varargs is not None and keyargs is not None:
+                    print "Method '%s' in key.py cannot have both varargs and keyword args." % method_name
+                    sys.exit(1)
+
+                minargs = maxargs = 0
+                if varargs is not None or keyargs is not None:
+                    maxargs = None
+                    minargs = len(args) - 1
+                else:
+                    minargs = maxargs = len(args) - 1
+                
                 self.commands[method_name] = {
                     'helptext': docstring,
                     'onelinehelp': docstring.split('\n')[0],
                     'function': actual_method,
                     'linenumber': inspect.findsource(actual_method)[1],
-                    'args': inspect.getargspec(actual_method).args,
-                    'varargs': inspect.getargspec(actual_method).varargs,
-                    'keywords': inspect.getargspec(actual_method).keywords,
+                    'minargs': minargs,
+                    'maxargs': maxargs,
+                    'args': args,
+                    'varargs': varargs,
+                    'keywords': keyargs,
                     'defaults': inspect.getargspec(actual_method).defaults,
                 }
 
+        #import IPython
+        #IPython.embed()
+
     def correct_args(self, command, number):
-        if self.commands[command]['varargs'] is not None:
-            return True
-        elif len(self.commands[command]['args']) == number:
-            return True
-        else:
-            return False
+        return self.commands[command]['minargs'] <= number and self.commands[command]['maxargs'] >= number
 
     def arg_help(self, command):
         if self.commands[command]['varargs'] is not None:
@@ -83,9 +99,10 @@ class CommandClass(object):
                 self.keycom_class.KEYDIR = os.path.abspath(os.path.dirname(self.keycom_file))
                 self.keycom_class.CWD = os.getcwd()
                 keycom_obj = self.keycom_class()
-                getattr(keycom_obj, command)(*command_args)
+                print getattr(keycom_obj, command)(*command_args)
             else:
                 print "Incorrect number of arguments for command '%s'.\n" % command
+                print "Arguments used: %s" % str(command_args)
                 self.help_command(command)
         else:
             print "Command '%s' not found in %s" % (command, self.keycom_file)

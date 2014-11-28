@@ -26,15 +26,13 @@ def interpreter():
     else:
         # All classes in key.py
         pyclasses = inspect.getmembers(imp.load_source("key", keypy_filename), inspect.isclass)
-        
-        if "KeyCom" not in [pyclass[0] for pyclass in pyclasses]:
+
+        if "KeyCom" not in [pyclass[1].__base__.__name__ for pyclass in pyclasses]:
             print "KeyCom class not found in key.py."
             print "\nSee http://keycom.readthedocs.org/en/latest/quickstart.html"
             return 1
 
-        keycom_class = [pyclass[1] for pyclass in pyclasses if pyclass[0] == "KeyCom"][0]
-#        import IPython
-#        IPython.embed()
+        keycom_class = [pyclass[1] for pyclass in pyclasses if pyclass[1].__base__.__name__ == "KeyCom"][0]
         cli_interface(keycom_class)
 
 def cli_interface(keycom_class):
