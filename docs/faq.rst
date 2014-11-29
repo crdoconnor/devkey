@@ -1,36 +1,42 @@
 FAQ
 ===
 
-* Why is the script called 'd'?
 
-Because you will probably be running it a lot. One letter command means fewer
+* Why is the script called 'k' and not 'projectkey'?
+
+Because you will probably be running it a lot. A one letter command means fewer
 keystrokes to wear you and your keyboard out.
 
-Apologies if you already have a command called d!
+* Won't the key.py file size grow and spiral out of control? Maybe one script per command is better?
 
-* Won't the dev.py file size grow and spiral out of control? Maybe one script per command is better?
-
-It might grow, but that's usually a sign that you should break out some of the tasks into separate files.
-I find that the number of commands stabilizes at around 12-13 and don't usually grow more than 5 lines long each.
-
-Sometimes it might make sense to create new dev.py files in separate directories (e.g. a production environment directory)
-so that in separate contexts you can run different commands. All of this is up to you, of course.
+It might grow uncontrollably, but that's usually a sign that you should break out some of the tasks into separate files, modules, scripts and even projects.
 
 * Is this just for python projects?
 
-No, you can use it in any environment.
+No, you can use it on any project, you just have to create the commands in python (or just translate shell commands).
 
-* Why not just use a shell script?
+* I already have a bunch of shell scripts. What does this give me?
 
-I actually used to just use it as a shell script, but the shell script spiralled out of control as I added features.
+1) All of your project commands get united under one easy to use, discoverable, self documenting file that you can call up with one key.
+2) It can be run even if you are inside your project's directory and six levels deep.
+3) You can translate almost any line in your bash script to use this self.sc("your command here") so it's not hard to switch.
+4) You can use a programming language that doesn't suck.
 
-In python you can get the best of both worlds as shown above, especially if you use amoffat's wonderful sh.
+* self.sc("") is bad because it invokes the shell. Haven't you heard of shellshock? Why does it do this?!
+
+A) Invoking the shell is only a security issue if you are using untrusted input. Everybody who uses a ProjectKey ought to be trusted. That's why they're running it *from* a shell.
+
+B) The reason I do it is that makes it easier to transpose existing shell scripts line by line into the ProjectKey without translating them into python. E.g. this:
+
+"""./venv/bin/pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs ./venv/bin/pip install -U"""
+
+It's ugly. It's non pythonic. But goddamn it, it works so I'm not rewriting it.
 
 * Should I install DevKey in a virtualenv?
 
-You can, but unless you activate it the 'd' command won't be accessible from everywhere.
+You can, and it will work, but if you do that you won't be able to use the k command unless the virtual environment is active.
 
-I recommend installing it outside a virtualenv even if you're going to be using a project that has a virtualenv.
+If you don't have root, this might be the only way of installing it, however.
 
 * This is neat!
 
