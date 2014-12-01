@@ -40,14 +40,12 @@ Step 1 - Put a file like this into the root of your project folder with your mos
             with open(filename, 'w') as fh:
                 [fh.write('%s\n' % line) for line in new]
 
-Step 2: Run: "sudo pip install devkey sh"
+Step 2: Run: "sudo pip install projectkey ; sudo activate-global-python-argcomplete"
 
-Step 3: Run: "sudo activate-global-python-argcomplete" (optional; this will give you autocomplete)
+Step 3: Run the 'k' command in any folder in your project::
 
-Step 3: Run the 'd' command in any folder in your project::
-
-    $ d help
-    Usage: d command [args]
+    $ k help
+    Usage: k command [args]
     
     Yourproject development environment commands.
     
@@ -65,7 +63,7 @@ Step 4: Add more commands.
 Features
 ========
 
-* Autodocuments itself using your docstrings.
+* Autodocuments using your docstrings.
 * Use variables DEVDIR or CWD in any command to refer to dev.py's directory or the current working directory.
 * Passes any arguments on to the method via the command line.
 * Autocomplete works out of the box.

@@ -1,7 +1,6 @@
 Project Info
 ============
 
-* Project Page: https://github.com/crdoconnor/devkey
-* Install howto: https://devkey.readthedocs.org/quickstart
-* Bug Tracking: https://github.com/crdoconnor/devkey/issues
-* Docs: https://devkey.readthedocs.org/
+* Project Page: https://github.com/crdoconnor/projectkey
+* Docs: https://projectkey.readthedocs.org/
+* Bug Tracking: https://github.com/crdoconnor/projectkey/issues
