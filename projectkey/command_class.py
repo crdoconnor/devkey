@@ -47,8 +47,8 @@ class CommandClass(object):
                     'defaults': inspect.getargspec(actual_method).defaults,
                 }
 
-    def correct_args(self, command, number):
-        return self.commands[command]['minargs'] <= number and self.commands[command]['maxargs'] >= number
+    def doc(self):
+        return self.projectkey_class.__doc__
 
     def arg_help(self, command):
         return ' '.join(self.commands[command]['argdocs'])
@@ -69,27 +69,13 @@ class CommandClass(object):
 
     def length_of_longest_command(self):
         return sorted([len(name) for name, _ in list(self.commands.items())], reverse=True)[0]
-    
-    def help_command(self, command):
-        if command in self.command_list():
-            print "Usage: d %s %s" % (command, self.arg_help(command))
-            print
-            print self.commands[command]['helptext']
-        else:
-            print "Command '%s' not found in %s. Type 'd help' to see a full list of commands." % (command, self.projectkey_file)
 
-    def print_help(self):
-        print "Usage: k command [args]\n"
-        if self.projectkey_class.__doc__ is not None:
-            print "%s\n" % self.projectkey_class.__doc__
-        length_of_longest_command = self.length_of_longest_command()
-
+    def commands_help(self):
+        cl = ""
         for name, command in self.sorted_commands():
             if command['helptext']:
-                print "  %s - %s" % (name.rjust(length_of_longest_command), command['onelinehelp'])
-
-        print
-        print "Run 'd help [command]' to get help on a particular command."
+                cl = cl + "  %s - %s\n" % (name.rjust(self.length_of_longest_command()), command['onelinehelp'])
+        return cl
 
     def run_command(self, command, command_args):
         """Run a ProjectKey command with a list of command_args."""
