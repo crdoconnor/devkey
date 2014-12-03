@@ -20,7 +20,7 @@ def cli_interface(projectkey_class):
     elif len(commands) > 1 and commands[0] in ['-h', '--help', 'help']:
         command = commands[1]
         if command in cc.command_list():
-            print("Usage: d %s %s" % (command, cc.arg_help(command)))
+            print("Usage: k %s %s" % (command, cc.arg_help(command)))
             print()
             print(cc.commands[command]['helptext'])
         else:
