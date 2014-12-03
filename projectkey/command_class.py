@@ -21,7 +21,7 @@ class CommandClass(object):
 
                 minargs = maxargs = 0
                 if varargs is not None or keyargs is not None:
-                    maxargs = 255
+                    maxargs = 1024
                     minargs = len(args)
                     argdocs = ['[%s1]' % varargs[:-1], '[%s2]' % varargs[:-1], '[%s3]' % varargs[:-1], '...',]
                 else:
