@@ -41,10 +41,6 @@ class CommandClass(object):
                     'minargs': minargs,
                     'maxargs': maxargs,
                     'argdocs': argdocs,
-                    'args': args,
-                    'varargs': varargs,
-                    'keywords': keyargs,
-                    'defaults': inspect.getargspec(actual_method).defaults,
                 }
 
     def doc(self):
