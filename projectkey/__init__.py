@@ -25,8 +25,9 @@ def run(shell_commands, ignore_errors=True):
         import subprocess
         for shell_command in shell_commands.split('\n'):
             subprocess.check_call(shell_command, shell=True)
-    except subprocess.CalledProcessError:
-        print(subprocess.output)
+    except subprocess.CalledProcessError, error:
+        if error.output is not None:
+            print(error.output)
         if not ignore_errors:
             sys.exit(1)
 
