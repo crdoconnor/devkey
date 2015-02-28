@@ -7,7 +7,7 @@ class CommandClass(object):
 
         self.commands = {}
         for method_name, actual_method in inspect.getmembers(self.projectkey_module, inspect.isfunction):
-            if not method_name.startswith("_"):
+            if not method_name.startswith("_") and inspect.getmodule(actual_method) == self.projectkey_module:
                 docstring = "" if actual_method.__doc__ is None else actual_method.__doc__
                 argspec = inspect.getargspec(actual_method)
                 args = argspec.args[1:]
