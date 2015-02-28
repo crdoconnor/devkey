@@ -6,3 +6,4 @@ projectkey.egg-info/
 dist/
 venv/
 *.kate-swp
+key.py
