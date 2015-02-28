@@ -1,13 +1,13 @@
 import os, inspect, sys
 
 class CommandClass(object):
-    def __init__(self, projectkey_class):
-        self.projectkey_class = projectkey_class
-        self.projectkey_file = inspect.getfile(self.projectkey_class)
+    def __init__(self, projectkey_module):
+        self.projectkey_module = projectkey_module
+        self.projectkey_file = inspect.getfile(self.projectkey_module)
 
         self.commands = {}
-        for method_name, actual_method in inspect.getmembers(self.projectkey_class, inspect.ismethod):
-            if not method_name.startswith("_") and inspect.getmodule(actual_method).__name__ != 'projectkey.keyclass':
+        for method_name, actual_method in inspect.getmembers(self.projectkey_module, inspect.isfunction):
+            if not method_name.startswith("_"):
                 docstring = "" if actual_method.__doc__ is None else actual_method.__doc__
                 argspec = inspect.getargspec(actual_method)
                 args = argspec.args[1:]
@@ -16,7 +16,7 @@ class CommandClass(object):
                 defaults = argspec.defaults
 
                 if varargs is not None and keyargs is not None:
-                    print "Method '%s' in key.py cannot have both *args and **kwargs" % method_name
+                    sys.stderr.write("Method '%s' in key.py cannot have both *args and **kwargs" % method_name)
                     sys.exit(1)
 
                 minargs = maxargs = 0
@@ -44,7 +44,7 @@ class CommandClass(object):
                 }
 
     def doc(self):
-        return self.projectkey_class.__doc__
+        return self.projectkey_module.__doc__
 
     def arg_help(self, command):
         return ' '.join(self.commands[command]['argdocs'])
@@ -77,22 +77,21 @@ class CommandClass(object):
         """Run a ProjectKey command with a list of command_args."""
         if command in self.command_list():
             if self.commands[command]['minargs'] <= len(command_args) <= self.commands[command]['maxargs']:
-                # Feed it the relevant directories
-                self.projectkey_class.KEYDIR = os.path.abspath(os.path.dirname(self.projectkey_file))
-                self.projectkey_class.CWD = os.getcwd()
+                # Feed module the relevant directories
+                self.projectkey_module.KEYDIR = os.path.abspath(os.path.dirname(self.projectkey_file))
+                self.projectkey_module.CWD = os.getcwd()
 
-                # Initialize class and run
-                projectkey_obj = self.projectkey_class()
-                returnvalue = getattr(projectkey_obj, command)(*command_args)
+                # Run command
+                returnvalue = getattr(self.projectkey_module, command)(*command_args)
                 
                 # If command returns something, print it
-                if returnvalue is not None and returnvalue != 0:
-                    print returnvalue
+                if returnvalue is not None:
+                    sys.stdout.write(returnvalue)
             else:
-                print "Incorrect number of arguments for command '%s'.\n" % command
-                print "Arguments used: \"%s\"" % '\"'.join(command_args)
+                sys.stderr.write("Incorrect number of arguments for command '%s'.\n" % command)
+                sys.stderr.write("Arguments used: \"%s\"" % '\"'.join(command_args))
                 self.help_command(command)
                 return 1
         else:
-            print "Command '%s' not found in %s" % (command, self.projectkey_file)
+            sys.stderr.write("Command '%s' not found in %s" % (command, self.projectkey_file))
             return 1
