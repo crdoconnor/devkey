@@ -9,10 +9,10 @@ def k_runner():
     checkdirectory = os.getcwd()
     directories_checked = []
     keypy_filename = None
-    while checkdirectory != '/':
+    while not os.path.ismount(checkdirectory):
         directories_checked.append(checkdirectory)
-        if os.path.exists("%s/key.py" % checkdirectory):
-            keypy_filename = "%s/key.py" % checkdirectory
+        if os.path.exists("{0}{1}key.py".format(checkdirectory, os.sep)):
+            keypy_filename = "{0}{1}key.py".format(checkdirectory, os.sep)
             break
         else:
             checkdirectory = os.path.abspath(os.path.join(checkdirectory, os.pardir))
