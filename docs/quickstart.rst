@@ -1,66 +1,65 @@
 Quickstart
 ==========
 
-Step 1: Put this file into the root of your project and call it dev.py:
 
-'''
-"""Yourproject development environment commands."""
-from os import system as s, chdir as cd
-from sh import hg
-import os
+Three step process to create your project's suite of custom commands that you can invoke with one key:
 
-def runserver():
-    """Run django debug web server on port 8000"""
-    cd(DEVDIR)
-    s("./venv/bin/python manage.py runserver 8000 --traceback --settings=yourproject.local_settings")
+Step 1: Run: "sudo pip install projectkey ; sudo activate-global-python-argcomplete"
 
-def upgrade():
-    """pip upgrade on all packages and freeze afterwards."""
-    cd(DEVDIR)
-    s("./venv/bin/pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs ./venv/bin/pip install -U")
-    s("./venv/bin/pip freeze > ./requirements.txt")
+Step 2: Create a key.py file in the root folder of your project and make it look like this::
+    
+    """Yourproject development environment commands."""
+    from projectkey import cli, cd, run
+    PROJECTNAME = "yourproject"
+        
+    def runserver():
+        """Run django debug web server on port 8080."""
+        print "Running webserver..."
+        cd(KEYDIR)
+        run("./venv/bin/python manage.py runserver_plus 8080 --traceback --settings=%s.dev_settings" % PROJECTNAME)
 
-def smtp():
-    """Run smtp server on port 25025."""
-    print "Running SMTP server..."
-    s("python -m smtpd -n -c DebuggingServer localhost:25025")
+    def upgrade():
+        """pip upgrade on all packages and freeze to requirements afterwards."""
+        cd(KEYDIR)
+        run("""
+            ./venv/bin/pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs ./venv/bin/pip install -U
+            ./venv/bin/pip freeze > ./requirements.txt
+        """)
 
-def s()
-    """Run hg status."""
-    s("hg status")
+    def smtp():
+        """Run smtp server on port 25025."""
+        print "Running SMTP server..."
+        run("python -m smtpd -n -c DebuggingServer localhost:25025")
+    
+    def striptrailingwhitespace():
+        """strip the trailing whitespace from all files in your mercurial repo."""
+        cd(KEYDIR)
+        repofiles = run_return("hg locate *.py").split('\n')
+        repofiles.remove('')
+        for filename in repofiles:
+            with open(filename, 'r') as fh:
+                new = [line.rstrip() for line in fh]
+            with open(filename, 'w') as fh:
+                [fh.write('%s\n' % line) for line in new]
 
-def striptrailingwhitespace():
-    """strip the trailing whitespace from all files in repo."""
-    cd(DEVDIR)
-    repofiles = hg("locate", "*.py").split('\n')
-    repofiles.remove('')
-    for filename in repofiles:
-        with open(filename, 'r') as fh:
-            new = [line.rstrip() for line in fh]
-        with open(filename, 'w') as fh:
-            [fh.write('%s\n' % line) for line in new]
-'''
+    def inspectfile(*filenames):
+        """Inspect file(s) for pylint violations."""
+        cd(CWD)
+        run("{0}/venv/bin/pylint --rcfile={0}/pylintrc -r n {1}".format(KEYDIR, ' '.join(filenames)))
 
-Step 2: Run: sudo pip install devkey sh
+Step 3: Run the 'k' command in any folder in your project::
 
-Step 3: Run: "sudo activate-global-python-argcomplete" (optional; this will give you autocomplete)
-
-Step 3: Run the 'd' command in any folder in your project:
-
-'''
-$ d help
-Usage: d command [args]
-
-Yourproject development environment commands.
-
-                runserver - Run django debug web server on port 8000
-                  upgrade - pip upgrade on all packages and freeze afterwards.
-                     smtp - Run smtp server on port 25025.
-                        s - Run hg status.
-  striptrailingwhitespace - strip the trailing whitespace from all files in mercurial repo.
-
-Run 'd help [command]' to get help on a particular command.
-
-'''
+    $ k help
+    Usage: k command [args]
+    
+    Yourproject development environment commands.
+    
+                    runserver - Run django debug web server on port 8000
+                      upgrade - pip upgrade on all packages and freeze to requirements afterwards.
+                         smtp - Run smtp server on port 25025.
+      striptrailingwhitespace - strip the trailing whitespace from all files in your mercurial repo.
+                  inspectfile - Inspect file(s) for pylint violations.
+    
+    Run 'd help [command]' to get more help on a particular command.
 
 Step 4: Add more commands!
