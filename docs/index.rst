@@ -8,6 +8,5 @@ DevKey
    :maxdepth: 2
 
    quickstart
-   why
    faq
    news

@@ -7,7 +7,7 @@ It is mainly intended to cut down these types of unnecessary team interactions:
 
 "Can you Skype me the command to run lint using our config file?"
 
-"How do you run a test again?"
+"How do you run a test again? I keep forgetting."
 
 "What's the exact command to run a development web server? I tried but it isn't working for me."
 
@@ -37,10 +37,11 @@ Anything you like, but here's the kind of commands I created with it:
 * Run various lint tools
 * Run tests
 * Generate documentation
-* Create builds
+* Run builds
 * Create skeleton code.
 * Dump/load data from the database.
 * Upgrade dependencies
+* Upload or sync files.
 * Tail logs on production.
 * ssh into production servers.
 * Run deployment scripts.
@@ -52,6 +53,7 @@ Anything you like, but here's the kind of commands I created with it:
 
 Because you will probably be running it a lot. A one letter command means fewer
 keystrokes to wear you and your keyboard out.
+
 
 * Is this just for python projects?
 
@@ -69,6 +71,11 @@ Great! You can unite them in one place, and:
 3) You can translate almost any line in your bash script to use this self.sc("your command here") so it's not hard to switch.
 4) You can use a programming language that doesn't suck to write some of the more complex automation tasks.
 
-* Should I install ProjectKey in a virtualenv or on my system python?
+
+* Shouldn't I install this in a virtualenv?
+
+You can, but I wouldn't.
 
 I would install it on your system python and write commands for each individual project key that understand the virtualenv that your project runs in.
+
+It has one dependency, so it is unlikely to cause conflicts with other packages installed on your system python.
