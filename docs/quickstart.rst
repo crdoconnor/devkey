@@ -1,7 +1,6 @@
 Quickstart
 ==========
 
-
 Three step process to create your project's suite of custom commands that you can invoke with one key:
 
 Step 1: Run: "sudo pip install projectkey ; sudo activate-global-python-argcomplete"
@@ -9,9 +8,9 @@ Step 1: Run: "sudo pip install projectkey ; sudo activate-global-python-argcompl
 Step 2: Create a key.py file in the root folder of your project and make it look like this::
     
     """Yourproject development environment commands."""
-    from projectkey import cli, cd, run
+    from projectkey import cli, cd, run, runnable
     PROJECTNAME = "yourproject"
-        
+    
     def runserver():
         """Run django debug web server on port 8080."""
         print "Running webserver..."
@@ -46,6 +45,8 @@ Step 2: Create a key.py file in the root folder of your project and make it look
         """Inspect file(s) for pylint violations."""
         cd(CWD)
         run("{0}/venv/bin/pylint --rcfile={0}/pylintrc -r n {1}".format(KEYDIR, ' '.join(filenames)))
+    
+    runnable(__name__)
 
 Step 3: Run the 'k' command in any folder in your project::
 

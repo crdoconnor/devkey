@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 
-import k_runner, interpreter, os, subprocess
+import k_runner, interpreter, os, subprocess, sys
 
 # The version as used in the setup.py and the docs conf.py
 __version__ = "0.2"
@@ -23,3 +23,8 @@ def run(shell_commands, ignore_errors=True):
 def run_return(shell_command):
     """Run shell commands and return the output."""
     return subprocess.check_output(shell_command, shell=True)
+
+def runnable(name):
+    """Makes a key.py file runnable directly (as well as through the k command)."""
+    if name == '__main__':
+        interpreter.cli_interface(sys.modules[name])
