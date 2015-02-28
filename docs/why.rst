@@ -22,6 +22,8 @@ It is intended to cut down these types of unnecessary interactions:
 
 "Are you sure the instructions on the wiki work? They're three years old."
 
+"Help! My git repo is broken again! I think I missed out the third command in the list of ones you gave me."
+
 
 
 * What kind of commands do I write with it?
@@ -29,7 +31,6 @@ It is intended to cut down these types of unnecessary interactions:
 Anything you like, but here's the kind of commands I created with it:
 
 * Set up [development | testing | staging | live] environments
-* Run development services - web server, mock SMTP server, task queue, etc.
 * Run various lint tools
 * Run tests
 * Generate documentation
