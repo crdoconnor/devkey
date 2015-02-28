@@ -1,5 +1,6 @@
 import os, sys, re, codecs
 from setuptools import setup, find_packages
+import projectkey
 
 def read(*parts):
     # intentionally *not* adding an encoding option to open
@@ -9,7 +10,7 @@ def read(*parts):
 long_description = "\n" + "\n".join([read('PROJECT.txt'), read('docs', 'quickstart.rst')])
 
 setup(name="projectkey",
-      version="0.1",
+      version=projectkey.__version__,
       description="A tool for running a suite of custom project commands invoked via one key.",
       long_description=long_description,
       classifiers=[
