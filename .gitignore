@@ -4,3 +4,4 @@ setup.cfg
 build/
 projectkey.egg-info/
 dist/
+venv/
