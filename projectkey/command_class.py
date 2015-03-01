@@ -16,7 +16,7 @@ class CommandClass(object):
                 defaults = argspec.defaults
 
                 if varargs is not None and keyargs is not None:
-                    sys.stderr.write("Method '%s' in key.py cannot have both *args and **kwargs" % method_name)
+                    sys.stderr.write("Method '%s' in key.py cannot have both *args and **kwargs.\n" % method_name)
                     sys.exit(1)
 
                 minargs = maxargs = 0
@@ -86,12 +86,11 @@ class CommandClass(object):
                 
                 # If command returns something, print it
                 if returnvalue is not None:
-                    sys.stdout.write(returnvalue)
+                    sys.stdout.write("{0}\n".format(returnvalue))
             else:
                 sys.stderr.write("Incorrect number of arguments for command '%s'.\n" % command)
-                sys.stderr.write("Arguments used: \"%s\"" % '\"'.join(command_args))
-                self.help_command(command)
+                sys.stderr.write("Arguments used: \"%s\"\n" % ', '.join(command_args))
                 return 1
         else:
-            sys.stderr.write("Command '%s' not found in %s" % (command, self.projectkey_file))
+            sys.stderr.write("Command '%s' not found in %s\n" % (command, self.projectkey_file))
             return 1
