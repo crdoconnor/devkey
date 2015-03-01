@@ -1,9 +1,13 @@
 ProjectKey
 ==========
 
-ProjectKey is a framework to let you write a suite of commands to automate common tasks that are specific to your projects.
+ProjectKey is a framework to let you write a self-documenting suite of commands in
+python to automate common project tasks.
 
-Example::
+You can then run these commands from any folder inside your project by using the 'k'
+key.
+
+For example::
 
     $ k help
     Usage: k command [args]
@@ -24,7 +28,7 @@ Three Step Quickstart
 
 Step 1: Install like so: "sudo pip install projectkey ; sudo activate-global-python-argcomplete"
 
-Step 2: Create a key.py file in the root folder of your project like this::
+Step 2: Create a key.py file in the *root* folder of your project like this::
     
     """Yourproject development environment commands."""
     from projectkey import cd, run, run_return, runnable
@@ -90,7 +94,7 @@ Features
 * Use variables KEYDIR or CWD in any command to refer to key.py's directory or the directory you ran k in - deep inside your project.
 * Passes any arguments on to the method via the command line.
 * Autocomplete works out of the box.
-* Comes with shortcut commands to run lists of shell commands directly, so you can copy and paste directly from existing bash scripts.
+* Comes with shortcut commands to run lists of shell commands directly, so you can copy and paste directly from existing shell scripts.
 * Use the full power of python to enhance your team's development environment and automate all of the things.
 
 For more documentation, see https://projectkey.readthedocs.org/
