@@ -2,6 +2,7 @@ import os, inspect, sys
 
 class CommandClass(object):
     def __init__(self, projectkey_module):
+        """Create a representation of the user's key.py file."""
         self.projectkey_module = projectkey_module
         self.projectkey_file = inspect.getfile(self.projectkey_module)
 
@@ -10,13 +11,13 @@ class CommandClass(object):
             if not method_name.startswith("_") and inspect.getmodule(actual_method) == self.projectkey_module:
                 docstring = "" if actual_method.__doc__ is None else actual_method.__doc__
                 argspec = inspect.getargspec(actual_method)
-                args = argspec.args[1:]
+                args = argspec.args
                 varargs = argspec.varargs
                 keyargs = argspec.keywords
                 defaults = argspec.defaults
 
                 if varargs is not None and keyargs is not None:
-                    sys.stderr.write("Method '%s' in key.py cannot have both *args and **kwargs.\n" % method_name)
+                    sys.stderr.write("Method '{0}' in key.py cannot have both *args and **kwargs.\n".format(method_name))
                     sys.exit(1)
 
                 minargs = maxargs = 0
@@ -44,9 +45,11 @@ class CommandClass(object):
                 }
 
     def doc(self):
+        """User's key.py module docstring."""
         return self.projectkey_module.__doc__
 
     def arg_help(self, command):
+        """Docstring for a command in key.py."""
         return ' '.join(self.commands[command]['argdocs'])
 
     def command_list(self):
@@ -67,6 +70,7 @@ class CommandClass(object):
         return sorted([len(name) for name, _ in list(self.commands.items())], reverse=True)[0]
 
     def commands_help(self):
+        """Printed help of the project key's commands."""
         cl = ""
         for name, command in self.sorted_commands():
             if command['helptext']:
@@ -78,13 +82,15 @@ class CommandClass(object):
         if command in self.command_list():
             if self.commands[command]['minargs'] <= len(command_args) <= self.commands[command]['maxargs']:
                 # Feed module the relevant directories
-                self.projectkey_module.KEYDIR = os.path.abspath(os.path.dirname(self.projectkey_file))
+                keydirectory = os.path.abspath(os.path.dirname(self.projectkey_file))
+                self.projectkey_module.KEYDIR = keydirectory
                 self.projectkey_module.CWD = os.getcwd()
+                os.chdir(keydirectory)
 
                 # Run command
                 returnvalue = getattr(self.projectkey_module, command)(*command_args)
                 
-                # If command returns something, print it
+                # If command returned something, print it
                 if returnvalue is not None:
                     sys.stdout.write("{0}\n".format(returnvalue))
             else:

@@ -36,15 +36,11 @@ Step 2: Create a key.py file in the *root* folder of your project like this::
     def runserver():
         """Run django debug web server on port 8080."""
         print "Running webserver..."
-        # Change the directory to the one that you put key.py in if you need to.
-        cd(KEYDIR)
-        
         # Run simple shell commands
         run("./venv/bin/python manage.py runserver_plus 8080 --traceback --settings=yourproject.special_settings")
 
     def upgrade():
         """pip upgrade on all packages and freeze to requirements afterwards."""
-        cd(KEYDIR)
         # Copy and paste whole bash scripts if you like...
         run("""
             ./venv/bin/pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs ./venv/bin/pip install -U
@@ -58,7 +54,6 @@ Step 2: Create a key.py file in the *root* folder of your project like this::
     
     def striptrailingwhitespace():
         """strip the trailing whitespace from all files in your mercurial repo."""
-        cd(KEYDIR)
         # Get the output of shell commands...
         repofiles = run_return("hg locate *.py").split('\n')
         
@@ -91,7 +86,7 @@ Features
 ========
 
 * Autodocuments using your docstrings.
-* Use variables KEYDIR or CWD in any command to refer to key.py's directory or the directory you ran k in - deep inside your project.
+* Use variables KEYDIR or CWD in any command to refer to key.py's directory or the directory you ran k in, inside your project.
 * Passes any arguments on to the method via the command line.
 * Autocomplete works out of the box.
 * Comes with shortcut commands to run lists of shell commands directly, so you can copy and paste directly from existing shell scripts.
