@@ -1,3 +1,7 @@
+**0.5**
+
+* sudo pip install now sets up argument completion automagically.
+
 **0.4**
 
 * Made the default starting directory the directory that the key file is in.
