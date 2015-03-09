@@ -14,7 +14,7 @@ class ArgumentCompletionInstall(install):
     """Install arg completion if projectkey is installed using system python."""
     def run(self):
         install.run(self)
-        if sys.executable.startswith("/usr/bin"):
+        if sys.executable.startswith("/usr"):
             os.system("activate-global-python-argcomplete")
 
 setup(name="projectkey",
