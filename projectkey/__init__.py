@@ -4,7 +4,7 @@
 import k_runner, interpreter, os, subprocess, sys
 
 # The version as used in the setup.py and the docs conf.py
-__version__ = "0.4"
+__version__ = "0.5"
 
 cli = interpreter.cli_interface
 cd = os.chdir
