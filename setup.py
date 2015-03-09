@@ -1,5 +1,6 @@
 import os, sys, re, codecs
 from setuptools import setup, find_packages
+from setuptools.command.install import install
 import projectkey
 
 def read(*parts):
@@ -8,6 +9,13 @@ def read(*parts):
     return codecs.open(os.path.join(os.path.abspath(os.path.dirname(__file__)), *parts), 'r').read()
 
 long_description = "\n" + "\n".join([read('PROJECT.txt'), read('docs', 'quickstart.rst')])
+
+class ArgumentCompletionInstall(install):
+    """Install arg completion if projectkey is installed using system python."""
+    def run(self):
+        install.run(self)
+        if sys.executable.startswith("/usr/bin"):
+            os.system("activate-global-python-argcomplete")
 
 setup(name="projectkey",
       version=projectkey.__version__,
@@ -36,4 +44,5 @@ setup(name="projectkey",
       package_data={},
       entry_points=dict(console_scripts=['k=projectkey:k_runner.k_runner',]),
       zip_safe=False,
+      cmdclass={'install': ArgumentCompletionInstall},
 )

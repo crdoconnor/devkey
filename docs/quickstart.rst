@@ -1,7 +1,7 @@
 Quickstart
 ==========
 
-Step 1: Install like so: "sudo pip install projectkey ; sudo activate-global-python-argcomplete"
+Step 1: Install like so: "sudo pip install projectkey"
 
 Step 2: Create a key.py file in the *root* folder of your project like this::
     
