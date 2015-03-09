@@ -36,12 +36,12 @@ Step 2: Create a key.py file in the *root* folder of your project like this::
     def runserver():
         """Run django debug web server on port 8080."""
         print "Running webserver..."
-        # Run simple shell commands
+        # Run simple shell commands, assuming you are in the same directory as your key.py file.
         run("./venv/bin/python manage.py runserver_plus 8080 --traceback --settings=yourproject.special_settings")
 
     def upgrade():
         """pip upgrade on all packages and freeze to requirements afterwards."""
-        # Copy and paste whole bash scripts if you like...
+        # Copy and paste in whole bash scripts if you like...
         run("""
             ./venv/bin/pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs ./venv/bin/pip install -U
             ./venv/bin/pip freeze > ./requirements.txt
