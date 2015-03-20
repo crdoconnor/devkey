@@ -28,7 +28,7 @@ def cli_interface(projectkey_module):
         if cc.doc() is not None:
             print("%s\n" % cc.doc())
         print(cc.commands_help())
-        print("Run 'd help [command]' to get more help on a particular command.")
+        print("Run 'k help [command]' to get more help on a particular command.")
     elif len(commands) > 1 and commands[0] in ['-h', '--help', 'help']:
         command = commands[1]
         if command in cc.command_list():
@@ -36,7 +36,7 @@ def cli_interface(projectkey_module):
             print()
             print(cc.commands[command]['helptext'])
         else:
-            print("Command '%s' not found in %s. Type 'd help' to see a full list of commands." % (command, cc.projectkey_file))
+            print("Command '%s' not found in %s. Type 'k help' to see a full list of commands." % (command, cc.projectkey_file))
     else:
         returnval = cc.run_command(commands[0], commands[1:])
 
