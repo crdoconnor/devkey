@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
-import os, imp, inspect, sys
 from interpreter import cli_interface
+import os
+import imp
+import inspect
+import sys
+
 
 def k_runner():
     """CLI interpreter for the k command."""

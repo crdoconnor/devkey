@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 
-import k_runner, interpreter, os, subprocess, sys
+import k_runner
+import interpreter
+import os
+import subprocess
+import sys
+
 
 # The version as used in the setup.py and the docs conf.py
-__version__ = "0.6.1"
+__version__ = "0.6.2"
 
 cli = interpreter.cli_interface
 cd = os.chdir
+
 
 def run(shell_commands, ignore_errors=True):
     """Run shell commands."""
@@ -20,9 +26,11 @@ def run(shell_commands, ignore_errors=True):
         if not ignore_errors:
             sys.exit(1)
 
+
 def run_return(shell_command):
     """Run shell commands and return the output."""
     return subprocess.check_output(shell_command, shell=True)
+
 
 def runnable(name):
     """Makes a key.py file runnable directly (as well as through the k command)."""

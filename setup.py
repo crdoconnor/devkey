@@ -1,7 +1,11 @@
-import os, sys, re, codecs
 from setuptools import setup, find_packages
 from setuptools.command.install import install
+import os
+import sys
+import re
+import codecs
 import projectkey
+
 
 def read(*parts):
     # intentionally *not* adding an encoding option to open
@@ -42,7 +46,7 @@ setup(name="projectkey",
       install_requires=['argcomplete>=0.8.1'],
       packages=find_packages(exclude=["contrib", "docs", "tests*"]),
       package_data={},
-      entry_points=dict(console_scripts=['k=projectkey:k_runner.k_runner',]),
+      entry_points=dict(console_scripts=['k=projectkey:k_runner.k_runner', ]),
       zip_safe=False,
       cmdclass={'install': ArgumentCompletionInstall},
 )

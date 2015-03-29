@@ -1,4 +1,7 @@
-import os, inspect, sys
+import os
+import inspect
+import sys
+
 
 class CommandClass(object):
     def __init__(self, projectkey_module):
@@ -24,7 +27,7 @@ class CommandClass(object):
                 if varargs is not None or keyargs is not None:
                     maxargs = 1024
                     minargs = len(args)
-                    argdocs = ['[%s1]' % varargs[:-1], '[%s2]' % varargs[:-1], '[%s3]' % varargs[:-1], '...',]
+                    argdocs = ['[%s1]' % varargs[:-1], '[%s2]' % varargs[:-1], '[%s3]' % varargs[:-1], '...', ]
                 else:
                     maxargs = len(args)
                     if defaults is not None:
@@ -33,7 +36,7 @@ class CommandClass(object):
                     else:
                         minargs = len(args)
                         argdocs = ['%s' % x for x in args]
-                
+
                 self.commands[method_name] = {
                     'helptext': docstring,
                     'onelinehelp': docstring.split('\n')[0],
@@ -58,7 +61,7 @@ class CommandClass(object):
     def command_completer(self, prefix, parsed_args, **kwargs):
         existing_commands = parsed_args.commands
         if len(existing_commands) == 0:
-            return (v for v in self.command_list() + ['help'] if v.startswith(prefix)) 
+            return (v for v in self.command_list() + ['help'] if v.startswith(prefix))
         else:
             if existing_commands[0] in ["help", "--help", "-h"]:
                 return (v for v in self.command_list() + ['help'] if v.startswith(prefix))
@@ -89,7 +92,7 @@ class CommandClass(object):
 
                 # Run command
                 returnvalue = getattr(self.projectkey_module, command)(*command_args)
-                
+
                 # If command returned something, print it
                 if returnvalue is not None:
                     sys.stdout.write("{0}\n".format(returnvalue))

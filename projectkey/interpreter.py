@@ -1,18 +1,23 @@
 from __future__ import print_function
-import os, sys, command_class
-import argcomplete, argparse
+import os
+import sys
+import command_class
+import argcomplete
+import argparse
 import signal
 import sys
+
 
 def cli_interface(projectkey_module):
     """CLI interpreter for the ProjectKey."""
     def signal_handler(signal, frame):
         print('')
-        sys.exit(0)
+        sys.exit(1)
     signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
 
     cc = command_class.CommandClass(projectkey_module)
-    parser = argparse.ArgumentParser(add_help=False, prefix_chars=[None,])
+    parser = argparse.ArgumentParser(add_help=False, prefix_chars=[None, ])
     parser.add_argument("commands", nargs='*', default=None).completer = cc.command_completer
     argcomplete.autocomplete(parser)
     commands = parser.parse_args().commands
