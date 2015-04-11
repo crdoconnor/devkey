@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
-from interpreter import cli_interface
-import os
-import imp
+import interpreter
 import inspect
+import imp
 import sys
+import os
 
 
 def k_runner():
-    """CLI interpreter for the k command."""
+    """k command handler - searcher of the key.py file before handing over control to the CLI."""
     # Check every directory from the current all the way to / for a file named key.py
     checkdirectory = os.getcwd()
     directories_checked = []
@@ -27,4 +27,4 @@ def k_runner():
         sys.stderr.write("\n\nSee http://projectkey.readthedocs.org/en/latest/quickstart.html\n")
         sys.exit(1)
     else:
-        cli_interface(imp.load_source("key", keypy_filename))
+        interpreter.cli(imp.load_source("key", keypy_filename))

@@ -11,34 +11,46 @@ For example::
 
     $ k help
     Usage: k command [args]
-    
+
     Yourproject development environment commands.
-    
+
                     runserver - Run django debug web server on port 8000
+                        shell - Run django shell.
                       upgrade - pip upgrade on all packages and freeze to requirements afterwards.
                          smtp - Run development smtp server on port 25025.
       striptrailingwhitespace - strip the trailing whitespace from all files in your mercurial repo.
                   inspectfile - Inspect file(s) for pylint violations.
-    
+
     Run 'k help [command]' to get more help on a particular command.
 
 
 Three Step Quickstart
 =====================
 
-Step 1: Install like so: "sudo pip install projectkey"
+Step 1: Install like so::
 
-Step 2: Create a key.py file in the *root* folder of your project like this::
-    
+    $ sudo pip install projectkey
+
+Step 2: Create a key.py file in the root folder of your project like this:
+
+.. code-block:: python
+
     #!/usr/bin/python
     """Yourproject development environment commands."""
-    from projectkey import cd, run, run_return, runnable
-    
+    from projectkey import cd, run, run_return, runnable, ignore_ctrlc
+
     def runserver():
         """Run django debug web server on port 8080."""
         print "Running webserver..."
         # Run simple shell commands, assuming you are in the same directory as your key.py file.
         run("./venv/bin/python manage.py runserver_plus 8080 --traceback --settings=yourproject.special_settings")
+
+    @ignore_ctrlc       # Projectkey will ignore the user pressing ctrl-C when running this command
+    def shell():
+        """Run django shell."""
+        print "Running shell..."
+        # ...since you want the python shell to decide what to do with Ctrl-C.
+        run("./venv/bin/python manage.py shell --settings=yourproject.special_settings")
 
     def upgrade():
         """pip upgrade on all packages and freeze to requirements afterwards."""
@@ -52,12 +64,12 @@ Step 2: Create a key.py file in the *root* folder of your project like this::
         """Run development smtp server on port 25025."""
         print "Running SMTP server..."
         run("python -m smtpd -n -c DebuggingServer localhost:25025")
-    
+
     def striptrailingwhitespace():
         """strip the trailing whitespace from all files in your mercurial repo."""
         # Get the output of shell commands...
         repofiles = run_return("hg locate *.py").split('\n')
-        
+
         # ...and write simple, short, python scripts to do stuff with it.
         repofiles.remove('')
         for filename in repofiles:
@@ -71,7 +83,7 @@ Step 2: Create a key.py file in the *root* folder of your project like this::
         # You can also change to the directory that the k command was run from, if you need that.
         cd(CWD)
         run("{0}/venv/bin/pylint --rcfile={0}/pylintrc -r n {1}".format(KEYDIR, ' '.join(filenames)))
-    
+
     # Add this and you can run the file directly (e.g. python key.py smtp) as well as by running "k smtp".
     runnable(__name__)
 
@@ -87,10 +99,8 @@ Features
 ========
 
 * Autodocuments using your docstrings.
-* Use variables KEYDIR or CWD in any command to refer to key.py's directory or the directory you ran k in, inside your project.
-* Passes any arguments on to the method via the command line.
+* Use variables KEYDIR or CWD in any command to refer to key.py's directory or the directory you ran k in.
+* Passes any arguments on to the method via the command line (optional arguments and variable numbers of arguments can be used too).
 * Autocomplete works out of the box.
-* Comes with shortcut commands to run lists of shell commands directly, so you can copy and paste directly from existing shell scripts.
-* Use the full power of python to enhance your team's development environment and automate all of the things.
-
-For more documentation, see https://projectkey.readthedocs.org/
+* Comes with shortcut command 'run' to run lists of shell commands directly, so you can copy and paste directly from existing shell scripts.
+* Selectively ignore Ctrl-C (by default it tries to stop and exit).

@@ -4,18 +4,11 @@ import sys
 import command_class
 import argcomplete
 import argparse
-import signal
 import sys
 
 
-def cli_interface(projectkey_module):
-    """CLI interpreter for the ProjectKey."""
-    def signal_handler(signal, frame):
-        print('')
-        sys.exit(1)
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
-
+def cli(projectkey_module):
+    """CLI interpreter for the ProjectKey file."""
     cc = command_class.CommandClass(projectkey_module)
     parser = argparse.ArgumentParser(add_help=False, prefix_chars=[None, ])
     parser.add_argument("commands", nargs='*', default=None).completer = cc.command_completer

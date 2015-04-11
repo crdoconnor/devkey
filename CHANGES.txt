@@ -1,3 +1,12 @@
+**0.7**
+
+* Allow selective ignoring of Ctrl-C per command using a decorator.
+* Removed docs (everything is now explained in README.rst).
+
+**0.6**
+
+* Allow the direct invocation of a projectkey via ./key.py [command] or python key.py [command].
+
 **0.5**
 
 * sudo pip install now sets up argument completion automagically.

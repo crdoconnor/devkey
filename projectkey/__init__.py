@@ -1,38 +1,28 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
-
-import k_runner
+from run_commands import run_return
+from run_commands import run
 import interpreter
-import os
 import subprocess
+import k_runner
 import sys
+import os
 
 
 # The version as used in the setup.py and the docs conf.py
-__version__ = "0.6.2"
+__version__ = "0.7"
 
-cli = interpreter.cli_interface
+# Because most key.py file users will want to change directory at some point
 cd = os.chdir
 
-
-def run(shell_commands, ignore_errors=True):
-    """Run shell commands."""
-    try:
-        for shell_command in shell_commands.split('\n'):
-            subprocess.check_call(shell_command, shell=True)
-    except subprocess.CalledProcessError, error:
-        if error.output is not None:
-            sys.stderr.write(error.output)
-        if not ignore_errors:
-            sys.exit(1)
-
-
-def run_return(shell_command):
-    """Run shell commands and return the output."""
-    return subprocess.check_output(shell_command, shell=True)
-
+def ignore_ctrlc(method):
+    """Decorator to make a ProjectKey command ignore Ctrl-C.
+       - For a commands that runs programs that want to handle
+         Ctrl-C themselves - ipython for instance."""
+    method.ignore_ctrlc = True
+    return method
 
 def runnable(name):
     """Makes a key.py file runnable directly (as well as through the k command)."""
     if name == '__main__':
-        interpreter.cli_interface(sys.modules[name])
+        interpreter.cli(sys.modules[name])

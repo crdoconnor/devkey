@@ -1,11 +1,14 @@
-import os
 import inspect
+import signal
 import sys
+import os
 
 
 class CommandClass(object):
+    """Representation of the user's key.py file."""
+
     def __init__(self, projectkey_module):
-        """Create a representation of the user's key.py file."""
+        """Create a representation of the user's key.py file through code inspection."""
         self.projectkey_module = projectkey_module
         self.projectkey_file = inspect.getfile(self.projectkey_module)
 
@@ -59,6 +62,7 @@ class CommandClass(object):
         return self.commands.keys()
 
     def command_completer(self, prefix, parsed_args, **kwargs):
+        """What to output when the tab command is pressed."""
         existing_commands = parsed_args.commands
         if len(existing_commands) == 0:
             return (v for v in self.command_list() + ['help'] if v.startswith(prefix))
@@ -67,9 +71,11 @@ class CommandClass(object):
                 return (v for v in self.command_list() + ['help'] if v.startswith(prefix))
 
     def sorted_commands(self):
+        """List of commands sorted by the position they appear in key.py."""
         return sorted(self.commands.items(), key=lambda command: command[1]['linenumber'])
 
-    def length_of_longest_command(self):
+    def _length_of_longest_command(self):
+        """Used to pretty print help."""
         return sorted([len(name) for name, _ in list(self.commands.items())], reverse=True)[0]
 
     def commands_help(self):
@@ -77,7 +83,7 @@ class CommandClass(object):
         cl = ""
         for name, command in self.sorted_commands():
             if command['helptext']:
-                cl = cl + "  %s - %s\n" % (name.rjust(self.length_of_longest_command()), command['onelinehelp'])
+                cl = cl + "  %s - %s\n" % (name.rjust(self._length_of_longest_command()), command['onelinehelp'])
         return cl
 
     def run_command(self, command, command_args):
@@ -89,6 +95,15 @@ class CommandClass(object):
                 self.projectkey_module.KEYDIR = keydirectory
                 self.projectkey_module.CWD = os.getcwd()
                 os.chdir(keydirectory)
+
+                # Decide what to do with CTRL-C or SIGTERM
+                ignore_ctrlc = hasattr(getattr(self.projectkey_module, command), 'ignore_ctrlc')
+                def signal_handler(signal, frame):
+                    if not ignore_ctrlc:
+                        print('')
+                        sys.exit(1)
+                signal.signal(signal.SIGINT, signal_handler)
+                signal.signal(signal.SIGTERM, signal_handler)
 
                 # Run command
                 returnvalue = getattr(self.projectkey_module, command)(*command_args)
