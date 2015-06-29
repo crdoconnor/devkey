@@ -8,10 +8,6 @@ import k_runner
 import sys
 import os
 
-
-# The version as used in the setup.py and the docs conf.py
-__version__ = "0.7"
-
 # Because most key.py file users will want to change directory at some point
 cd = os.chdir
 

@@ -1,6 +1,5 @@
 from setuptools.command.install import install
 from setuptools import setup, find_packages
-import projectkey
 import codecs
 import sys
 import os
@@ -19,7 +18,7 @@ class ArgumentCompletionInstall(install):
             os.system("activate-global-python-argcomplete")
 
 setup(name="projectkey",
-      version=projectkey.__version__,
+      version="0.7.1",
       description="A tool for running a suite of custom project commands invoked via one key.",
       long_description=read('README.rst'),
       classifiers=[
